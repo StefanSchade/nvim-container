@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  dev-env:
+    container_name: ${CONTAINER_NAME}
+    image: ${IMAGE_NAME}
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ${DEV_SETUP_PATH}:/mnt/dev-env-setup
+      - ${PROJECT_PATH}:/mnt/project
+    environment:
+      - USER=devuser
+    entrypoint: ["/bin/bash", "/mnt/dev-env-setup/scripts/postCreateScript.sh"]
+    tty: true
+    networks:
+      - dev-network
+
+networks:
+  dev-network:
+    driver: bridge

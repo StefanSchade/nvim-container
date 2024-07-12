@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  dev-env:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ${DEV_SETUP_PATH}:/mnt/dev-env-setup
+      - ${PROJECT_PATH}:/mnt/project
+    environment:
+      - USER=devuser
+    entrypoint: ["/bin/bash", "/mnt/dev-env-setup/docker/postCreateScript.sh"]
+    tty: true
+    command: ["tail", "-f", "/dev/null"]
