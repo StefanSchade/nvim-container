@@ -2,17 +2,30 @@
 setlocal enabledelayedexpansion
 
 :: Check if the repository name is provided
-if "%1"=="" (
-  echo Usage: %0 ^<repository_name>^
+if "%~1"=="" (
+  echo Usage: %0 ^<repository_name^>
   exit /b 1
 )
 
-:: Set the project path, container name, and image name based on the lowercase repository name
-set "REPO_NAME=%1"
-set PROJECT_PATH=../%REPO_NAME%
-set CONTAINER_NAME=nvim-%REPO_NAME%
-set IMAGE_NAME=nvim-%REPO_NAME%
-set DEV_SETUP_PATH=./
+:: Convert repository name to lowercase
+set "REPO_NAME=%~1"
+set "REPO_NAME_LOWER="
+for /L %%I in (0,1,255) do (
+    set "char=!REPO_NAME:~%%I,1!"
+    if not "!char!"=="" (
+        for %%C in ("A=a" "B=b" "C=c" "D=d" "E=e" "F=f" "G=g" "H=h" "I=i" "J=j" "K=k" "L=l" "M=m" "N=n" "O=o" "P=p" "Q=q" "R=r" "S=s" "T=t" "U=u" "V=v" "W=w" "X=x" "Y=y" "Z=z") do (
+            set "char=!char:%%~C!"
+        )
+        set "REPO_NAME_LOWER=!REPO_NAME_LOWER!!char!"
+    )
+)
+echo !REPO_NAME_LOWER!
+
+:: Use the lowercase repository name for the rest of the script
+set "PROJECT_PATH=../!REPO_NAME_LOWER!"
+set "CONTAINER_NAME=nvim-!REPO_NAME_LOWER!"
+set "IMAGE_NAME=nvim-!REPO_NAME_LOWER!"
+set "DEV_SETUP_PATH=./"
 
 :: Navigate to the parent directory to create the .env file
 cd ..
@@ -26,22 +39,22 @@ echo PROJECT_PATH=%PROJECT_PATH% >> .env
 :: Navigate back to the scripts directory
 cd scripts
 
-:: Ensure any existing containers are stopped and removed
-docker-compose down --volumes --remove-orphans
+:: Stop and remove only the nvim-container related services
+docker-compose -f ../docker-compose.yml down --volumes --remove-orphans
 
 :: Remove the existing image
 docker rmi %IMAGE_NAME%
 
-:: Prune Docker system to ensure no residual data
-docker system prune --all --volumes --force
+:: Prune Docker system to ensure no residual data (only for nvim-container related)
+docker system prune --all --volumes --force --filter "label=project=nvim-container"
 
 :: Rebuild the Docker image to ensure changes are applied
-docker-compose build --no-cache
+docker-compose -f ../docker-compose.yml build --no-cache
 
 :: Run docker-compose with the environment variables
-docker-compose up -d
+docker-compose -f ../docker-compose.yml up -d
 
 :: Display the status of the Docker Compose services
-docker-compose ps
+docker-compose -f ../docker-compose.yml ps
 
 endlocal
