@@ -6,18 +6,20 @@ RUN apt-get update && \
     neovim \
     tmux \
     git \
-    ssh \
+    sudo \
     curl \
-    wget \
-    iputils-ping \  
-    && apt-get clean
+    wget && \
+    apt-get clean
 
 # Add user and set up home directory
 RUN useradd -ms /bin/bash devuser
 
-# Ensure the devuser has the necessary permissions for the mounted volumes
+# Set up sudo for devuser
 RUN usermod -aG sudo devuser
 RUN echo "devuser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+# Ensure the devuser has the necessary permissions for the tmux directory
+RUN mkdir -p /tmp/tmux-0 && chown -R devuser:devuser /tmp/tmux-0
 
 # Switch to devuser
 USER devuser
