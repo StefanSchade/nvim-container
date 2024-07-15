@@ -22,30 +22,16 @@ for /L %%I in (0,1,255) do (
 echo !REPO_NAME_LOWER!
 
 :: Use the lowercase repository name for the rest of the script
-set "PROJECT_PATH=../!REPO_NAME_LOWER!"
 set "CONTAINER_NAME=nvim-!REPO_NAME_LOWER!"
 set "IMAGE_NAME=nvim-!REPO_NAME_LOWER!"
-set "DEV_SETUP_PATH=./"
 
-:: Navigate to the parent directory to create the .env file
+:: Navigate to the parent directory
 cd ..
 
-:: Create or update the .env file
-echo DEV_SETUP_PATH=%DEV_SETUP_PATH% > .env
-echo CONTAINER_NAME=%CONTAINER_NAME% >> .env
-echo IMAGE_NAME=%IMAGE_NAME% >> .env
-echo PROJECT_PATH=%PROJECT_PATH% >> .env
+:: Stop and remove only the nvim-container related services
+docker-compose -f docker-compose.yml down --volumes --remove-orphans
 
-:: Navigate back to the scripts directory
-cd scripts
-
-:: Rebuild the Docker image to ensure changes are applied
-docker-compose -f ../docker-compose.yml build --no-cache
-
-:: Run docker-compose with the environment variables
-docker-compose -f ../docker-compose.yml up -d
-
-:: Display the status of the Docker Compose services
-docker-compose -f ../docker-compose.yml ps
+:: Remove the existing image
+docker rmi %IMAGE_NAME%
 
 endlocal
