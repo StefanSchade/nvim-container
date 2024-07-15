@@ -22,14 +22,15 @@ for /L %%I in (0,1,255) do (
 echo !REPO_NAME_LOWER!
 
 :: Use the lowercase repository name for the rest of the script
-set "CONTAINER_NAME=nvim-!REPO_NAME_LOWER!"
+set "CONTAINER_NAME=nvim-!REPO_NAME_LOWER!-%RANDOM%"
 set "IMAGE_NAME=nvim-!REPO_NAME_LOWER!"
+set "PROJECT_NAME=nvim-container-!REPO_NAME_LOWER!"
 
 :: Navigate to the parent directory
 cd ..
 
 :: Stop and remove only the nvim-container related services
-docker-compose -f docker-compose.yml down --volumes --remove-orphans
+docker-compose -p %PROJECT_NAME% -f docker-compose.yml down --volumes --remove-orphans
 
 :: Remove the existing image
 docker rmi %IMAGE_NAME%
