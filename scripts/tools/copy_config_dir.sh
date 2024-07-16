@@ -32,6 +32,13 @@ copy_config_dir() {
         rm -rf "$dest_dir"
     fi
 
+    echo "Creating destination directory '$dest_dir'"
+      mkdir -p "$dest_dir"
+      if [ $? -ne 0 ]; then
+          echo "Error: Failed to create destination directory '$dest_dir'."
+          exit 1
+      fi
+
     # Copy the source directory to the destination
     echo "Copying configuration for $tool from $source_dir to $dest_dir"
     cp -r "$source_dir" "$dest_dir"
