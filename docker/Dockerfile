@@ -7,14 +7,23 @@ RUN apt-get update && \
     tmux \
     git \
     sudo \
+    iputils-ping \
     curl \
     wget \
     apt-transport-https \
     ca-certificates && \
     apt-get clean
 
+# Create the devuser user and set up sudo
+RUN useradd -ms /bin/bash devuser
+RUN usermod -aG sudo devuser
+RUN echo "devuser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
 # Copy setup scripts to the image
-COPY scripts/setup_zscaler.sh /mnt/dev-env-setup/scripts/setup_zscaler.sh
+COPY scripts/ /mnt/dev-env-setup/scripts/
+
+# Set permissions for the scripts
+RUN chmod +x /mnt/dev-env-setup/scripts/*.sh
 
 # Set up Zscaler certificate during build if it exists
 ARG CERT_PATH=/workspace/zscaler.crt
@@ -28,15 +37,15 @@ RUN if [ -f "$CERT_PATH" ]; then \
         echo "ZScaler certificate not found. Skipping CA store update."; \
     fi
 
-# Add user and set up home directory
-RUN useradd -ms /bin/bash devuser
+# Create necessary directories and set permissions
+RUN mkdir -p /mnt/dev-env-setup /mnt/project
+COPY scripts/postCreateScript.sh /home/devuser/postCreateScript.sh
+RUN chmod +x /home/devuser/postCreateScript.sh && \
+    chown -R devuser:devuser /mnt/dev-env-setup /mnt/project
 
-# Set up sudo for devuser
-RUN usermod -aG sudo devuser
-RUN echo "devuser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-
-# Ensure the devuser has the necessary permissions for the tmux directory
-RUN mkdir -p /tmp/tmux-0 && chown -R devuser:devuser /tmp/tmux-0
+# Ensure devuser has ownership of the mounted volumes
+RUN mkdir -p /home/devuser/.config/nvim /home/devuser/.local/state/nvim /home/devuser/.local/share/nvim && \
+    chown -R devuser:devuser /home/devuser/.config/nvim /home/devuser/.local/state/nvim /home/devuser/.local/share/nvim
 
 # Remove the Zscaler certificate if it was added
 RUN echo "Checking for ZScaler certificate to remove" && \
@@ -53,7 +62,4 @@ RUN echo "Checking for ZScaler certificate to remove" && \
 USER devuser
 WORKDIR /home/devuser
 
-# Ensure the postCreateScript is executable and run it
-ENTRYPOINT ["/bin/bash", "-c",                                       \
-            "chmod +x /mnt/dev-env-setup/scripts/postCreateScript.sh \
-            && /mnt/dev-env-setup/scripts/postCreateScript.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "/home/devuser/postCreateScript.sh && /bin/bash"]
