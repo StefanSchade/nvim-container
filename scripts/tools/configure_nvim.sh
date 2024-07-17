@@ -2,7 +2,7 @@
 
 SOURCE_PATH=$1
 USER_HOME="/home/devuser"
-DEST_PATH="$USER_HOME/.config/nvim"
+DEST_PATH="$USER_HOME/.config"
 
 echo "configure nvim"
 echo $SOURCE_PATH

@@ -3,15 +3,15 @@
 # Log the script name
 source ./helper/log_helper.sh && log_script_name
 
-echo "XXXXXXXXXXXXXXX"
-ls -l /home/devuser/
-echo "XXXXXXXXXXXXXXX"
-echo "scripts before conversion:"
-cat /home/devuser/before_dos2unix.txt
-echo "XXXXXXXXXXXXXXX"
-echo "scripts after conversion:"
-cat /home/devuser/after_dos2unix.txt
-echo "XXXXXXXXXXXXXXX"
+# echo "XXXXXXXXXXXXXXX"
+# ls -l /home/devuser/
+# echo "XXXXXXXXXXXXXXX"
+# echo "scripts before conversion:"
+# cat /home/devuser/before_dos2unix.txt
+# echo "XXXXXXXXXXXXXXX"
+# echo "scripts after conversion:"
+# cat /home/devuser/after_dos2unix.txt
+# echo "XXXXXXXXXXXXXXX"
 
 # Setup ZScaler certificate if available
 source ./setup_zscaler.sh

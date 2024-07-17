@@ -39,15 +39,14 @@ RUN mkdir -p /mnt/dev-env-setup /mnt/project
 COPY scripts/ /home/devuser/scripts_setup_env/
 
 # set all scripts just copied to be executable and have line endings in unix style
-RUN find /home/devuser/scripts_setup_env/ -type f -name "*.sh" -exec file {}     \; > /home/devuser/before_dos2unix.txt         && \
-    find /home/devuser/scripts_setup_env/ -type f -name "*.sh" -exec dos2unix {} \;                                             && \
-    find /home/devuser/scripts_setup_env/ -type f -name "*.sh" -exec chmod +x {} \;                                             && \
-    find /home/devuser/scripts_setup_env/ -type f -name "*.sh" -exec file {}     \; > /home/devuser/after_dos2unix.txt
+# RUN find /home/devuser/scripts_setup_env/ -type f -name "*.sh" -exec file {}     \; > /home/devuser/before_dos2unix.txt         && \
+#     find /home/devuser/scripts_setup_env/ -type f -name "*.sh" -exec dos2unix {} \;                                             && \
+#     find /home/devuser/scripts_setup_env/ -type f -name "*.sh" -exec chmod +x {} \;                                             && \
+#     find /home/devuser/scripts_setup_env/ -type f -name "*.sh" -exec file {}     \; > /home/devuser/after_dos2unix.txt
 
 # Add debugging command to print contents of the text files during build
-RUN echo "Contents of before_dos2unix.txt:" && cat /home/devuser/before_dos2unix.txt && \
-    echo "Contents of after_dos2unix.txt:" && cat /home/devuser/after_dos2unix.txt
-
+# RUN echo "Contents of before_dos2unix.txt:" && cat /home/devuser/before_dos2unix.txt && \
+#     echo "Contents of after_dos2unix.txt:" && cat /home/devuser/after_dos2unix.txt
 
 #RUN chmod +x /home/devuser/scripts_setup_env/*.sh && \
 #    chown -R devuser:devuser /mnt/dev-env-setup /mnt/project /home/devuser/scripts_setup_env
