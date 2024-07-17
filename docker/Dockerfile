@@ -15,7 +15,13 @@ RUN apt-get update && \
     ca-certificates && \
     apt-get clean
 
-RUN apt-get update && apt-get install -y locales && locale-gen en_US.UTF-8
+# install utf 8 locales for US and DE
+RUN apt-get update && apt-get install -y locales \
+    && locale-gen en_US.UTF-8 \
+    && locale-gen de_DE.UTF-8 \
+    && update-locale
+
+# set us as the default locale
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
