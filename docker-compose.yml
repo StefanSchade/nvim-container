@@ -12,7 +12,7 @@ services:
       - ${PROJECT_PATH}:/mnt/project
     environment:
       - USER=devuser
-    entrypoint: ["/bin/bash", "-c", "/home/devuser/scripts_setup_env/postCreateScript.sh && /bin/bash"]
+    entrypoint: ["/bin/bash", "-c", "cd /home/devuser/scripts_setup_env/ && ./postCreateScript.sh && cd /mnt && /bin/bash"]
     tty: true
     networks:
       - dev-network

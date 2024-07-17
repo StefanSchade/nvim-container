@@ -1,5 +1,6 @@
 # my additions
 .env
+zscaler.crt
 
 # Created by https://www.toptal.com/developers/gitignore
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij+visualstudiocode+windows+macos+linux

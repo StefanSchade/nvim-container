@@ -79,7 +79,9 @@ RUN echo "Checking for ZScaler certificate to remove" && \
 
 # Switch to devuser
 USER devuser
-WORKDIR /home/devuser/scripts_setup_env/
+#WORKDIR /home/devuser/scripts_setup_env/
+
+WORKDIR /mnt/
 
 # entrypoint irrelevant since override in docker-compose.yml
-ENTRYPOINT ["/bin/bash", "-c", "/home/devuser/scripts_setup_env/postCreateScript.sh && /bin/bash"]
+ENTRYPOINT ["/bin/bash", "-c", "cd /home/devuser/scripts_setup_env/ && ./postCreateScript.sh && cd /mnt && /bin/bash"]
