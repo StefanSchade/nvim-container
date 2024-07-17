@@ -15,6 +15,11 @@ RUN apt-get update && \
     ca-certificates && \
     apt-get clean
 
+RUN apt-get update && apt-get install -y locales && locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
 # Set up Zscaler certificate during build if it exists
 ARG CERT_PATH=/workspace/zscaler.crt
 RUN if [ -f "$CERT_PATH" ]; then \
