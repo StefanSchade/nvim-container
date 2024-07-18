@@ -1,0 +1,116 @@
+== Windows
+
+=== Alacritty
+
+==== why not using the cmd editor
+
+The standard editor in windows is the cmd application that provides a cmd-shell or a powershell. The issue that promted me to install a different editor was, that I could not overwrite the keyboard comnbinbation `Ctrl-z` somehow. As on many programs this is the undo-function I hit this quite frequently and ended my docker session which meant that I lost my edits. With Alacritty I managed to acchieve a setup with all my requirements quickly.
+
+==== configuration
+
+This is my configuration (for details where to put it look for the documentation for Alacritty on the web)
+
+[source]
+-------
+[font]
+size = 14.0
+
+[font.normal]
+family = "JetBrainsMonoNL Nerd Font Mono"
+style = "Regular"
+
+[font.bold]
+family = "JetBrainsMonoNL Nerd Font Mono"
+style = "Bold"
+
+[font.italic]
+family = "JetBrainsMonoNL Nerd Font Mono"
+style = "Italic"
+
+[font.bold_italic]
+family = "JetBrainsMonoNL Nerd Font Mono"
+style = "Bold Italic"
+
+[[keyboard.bindings]]
+action = "None"
+key = "Z"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "None"
+key = "Z"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "Copy"
+key = "C"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "Paste"
+key = "V"
+mods = "Control|Shift"
+
+[window.dimensions]
+columns = 120
+lines = 30
+
+# Colors (add this to your alacritty.toml)
+[colors]
+# Default colors
+[colors.primary]
+background = '0x000000'
+foreground = '0xe5e5e5'
+
+# Normal colors
+[colors.normal]
+black = '0x000000'
+red = '0xff5555'
+green = '0x50fa7b'
+yellow = '0xf1fa8c'
+#blue = '0xbd93f9'
+blue = '0x0000ff'   # Darker blue for better readability
+magenta = '0xff79c6'
+cyan = '0x8be9fd'
+white = '0xbfbfbf'
+
+# Bright colors
+[colors.bright]
+black = '0x4d4d4d'
+red = '0xff6e6e'
+green = '0x69ff94'
+yellow = '0xffffa5'
+blue = '0xd6acff'
+magenta = '0xff92d0'
+cyan = '0xa4ffff'
+white = '0xe6e6e6'
+-------
+
+Lets go through it in detail
+
+* The font size is purely based on my prefernce
+
+* to display the file tree in neovims "neotree" plugin in a somewhat advanced way I needed 3 requisites.
+
+   ** install UTF-8 compatible locale in the container (compare Dockerfile)
+   ** install a font that offers special unicode characters (e.g. open and closed folders) to the windows system
+   ** configure that font in the alacritty.toml
+
+* keyboard bindings
+
+   ** suppress the key combination `Ctrl-z` to avoid leaving the docker session unintentionally
+   ** define a way to copy the clipboard on my local machine into nvim (C+Ctrl+Shift)
+
+* window dimensions are purely personal preference
+
+* I had to aajdust the colors slightly to have a good readability under unix when moving in the shell. In my case I had unreadable folders due to a lack of contrast between fore and background
+
+==== prerequisits
+
+The only additional thing was to download and install a nerd font. This is a special group of monospace font containing a high number of glyphes. 
+
+I downloaded Jetbrains nerd font from a git repo as a zip, unpack it and install it by right click on the system.
+
+you can preview the fonds on the system by using the app "settings" and in there the section "fonts".
+
+
