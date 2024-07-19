@@ -1,0 +1,24 @@
+== A very basic User Guide
+
+If you want to use the setup, follow these steps. (I am currently working under Windows, so on other systems you might have to adapt the startup scripts. This should not be hard)
+
+* Prerequisistes / Assumptions
+
+  ** your editor is configured (see document "editor" in this repo)
+  ** you want to use nvim to edit projects in the same repo structure (mine is under C://Users/<username>/REPOS/many_repos) and the assumption in my scripts is that the repo you want to edit resides as a neigbhour to this cloned repo in the same folder (in my case REPOS, but the name is not important)
+  ** I keep my git names in line with the folder names in REPOS but at this point I dont think I relied on this assumption here yet
+  ** I asume there is a docker daemon running - I use Docker Desktop
+
+* clone the repo and enter the scripts directory
+
+* execute the script "run_dev_env.bat" and pass the name of the repo you want to edit as an argument, the script will build and start a docker container containing the unix with the configured tools. The name of the container is nvim- followed by the name of the repo you want to edit.
+
+* to use the setup, connect to the running container using the command docker exec -it containername /bin/bash. there you can start the editor with tmux and nvim
+
+* you will find yourself in the mountpoint with 2 mounts, one containg the repo you want to edit and one containing the repo connected to the configuration
+
+* If you want to perform config changes to the tools that are not lost when the container is deleted, you should adjust the files in that repo under /configs/. you can either adjust the subfolder default or create a new subfolder if you dont want the default behaviour to be affected. again, there is a script (this time a bash script as it is run within the container) that copies over the configs to the proper place. you can pass an argument to specify the subdirectory under configs that you want to use (e.g. default)
+
+* you can start multiple containers at once. they will all have a mount on the dev-env-setup project, so be aware that changes affect the other containers. this directory should not be used for files managed by automated processes since this could lead to a race condition between multiple containers.
+
+

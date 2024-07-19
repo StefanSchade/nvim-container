@@ -1,12 +1,12 @@
-== Windows
+== Client Side Setup
 
-=== Alacritty
+=== Windows
 
-==== why not using the cmd editor
+==== Choice of editor: Alacritty
 
-The standard editor in windows is the cmd application that provides a cmd-shell or a powershell. The issue that promted me to install a different editor was, that I could not overwrite the keyboard comnbinbation `Ctrl-z` somehow. As on many programs this is the undo-function I hit this quite frequently and ended my docker session which meant that I lost my edits. With Alacritty I managed to acchieve a setup with all my requirements quickly.
+The standard editor in windows is the cmd application that provides a cmd-shell or a powershell. The issue that promted me to install a different editor was, that I could not overwrite the keyboard comnbinbation `Ctrl-z` somehow. As on many programs this is the undo-function I hit this quite frequently without intending to and ended my docker session which meant that I lost my edits. With Alacritty I managed to acchieve a setup with all my requirements quickly. Alacritty was the first editor I tried out, so there might be vailid alternatives I am unaware of.
 
-==== configuration
+==== reference configuration
 
 This is my configuration (for details where to put it look for the documentation for Alacritty on the web)
 
@@ -40,7 +40,7 @@ mods = "Control"
 action = "None"
 key = "Z"
 mods = "Control"
-
+[
 [[keyboard.bindings]]
 action = "Copy"
 key = "C"
@@ -51,7 +51,7 @@ action = "Paste"
 key = "V"
 mods = "Control|Shift"
 
-[window.dimensions]
+window.dimensions]
 columns = 120
 lines = 30
 
@@ -113,4 +113,41 @@ I downloaded Jetbrains nerd font from a git repo as a zip, unpack it and install
 
 you can preview the fonds on the system by using the app "settings" and in there the section "fonts".
 
+== Copy and Paste between editor in the container and the host machine
+
+Copy and paste within nvim works via internal buffers and by itself has no interaction with the clipboard on my host machine. This poses a problem if I vant to "copy and paste" content from an application on my host machine (e.g. a browser window) to nvim in my docker container or if I want to do this between different nvim sessions in distinct containers.
+
+I do start neovim within a tmux session - this in combination with the tmux setting in this repo allows we to use the buffer created when copying something with the right-mouse-click-action is inserted into the clipboard of my host machine. This enables the direction nvim to host machine.
+
+The editor configuration contains a section dedicated to cut and paste. 
+
+[source]
+--------
+[[keyboard.bindings]]
+action = "Copy"
+key = "C"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "Paste"
+key = "V"
+mods = "Control|Shift"
+--------
+
+this should allow to copy and paste independently of tmux on the level of the terminal. In my environment, this does work for paste - unfortunately it does not work for the other way, but here I have the solution above. Thus copy and paste works (somehow) in both directions. There might be more consistent solutions. 
+
+== Neo-tree Icons
+
+[cols="1,1,1", options="header"]
+|===
+| Icon | Unicode | Significance
+
+|  | `U+F492` | Configuration or settings file (.env)
+|  | `U+E702` | Git-related file (.gitattributes, .gitignore)
+| 󰡨 | `U+ECA8` | Docker-related file (docker-compose.yml)
+|  | `U+E615` | General configuration or settings file (docker-compose.debug.yml)
+|  | `U+E5FF` | Folder (closed)
+|  | `U+E5FE` | Folder (open)
+|  | `U+F15C` | File
+|===
 
