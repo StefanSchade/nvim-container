@@ -4,7 +4,7 @@ If you want to use the setup, follow these steps. (I am currently working under 
 
 * Prerequisistes / Assumptions
 
-  ** your editor is configured (see document "editor" in this repo)
+  ** your terminal is configured (see document "terminal.adoc" in this repo)
   ** you want to use nvim to edit projects in the same repo structure (mine is under C://Users/<username>/REPOS/many_repos) and the assumption in my scripts is that the repo you want to edit resides as a neigbhour to this cloned repo in the same folder (in my case REPOS, but the name is not important)
   ** I keep my git names in line with the folder names in REPOS but at this point I dont think I relied on this assumption here yet
   ** I asume there is a docker daemon running - I use Docker Desktop
