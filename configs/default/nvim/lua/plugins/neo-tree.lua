@@ -9,6 +9,15 @@ return {
    },
    config = function() 
       vim.keymap.set('n', '<C-n>', ':Neotree filesystem reveal left<CR>')
-      local NERDTreeShowHidden = 1
+
+      -- Setup Neo-tree to show hidden files
+      require("neo-tree").setup({
+        filesystem = {
+          filtered_items = {
+            hide_dotfiles = false, -- Show hidden files (dotfiles)
+          },
+        },
+      })
+
    end
 }
