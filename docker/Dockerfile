@@ -13,7 +13,10 @@ RUN apt-get update && \
     curl \
     wget \
     apt-transport-https \
-    ca-certificates && \
+    ca-certificates \
+    python3 \
+    python3-venv \
+    python3-pip && \
     apt-get clean
 
 # install utf 8 locales for US and DE
@@ -49,6 +52,14 @@ RUN mkdir -p /mnt/dev-env-setup /mnt/project
 
 # Copy the scripts to the container to prevent permission problems on the host system
 COPY scripts/ /home/devuser/scripts_setup_env/
+
+# Make all scripts copied to be executable and have line endings in Unix style
+RUN find /home/devuser/scripts_setup_env/ -type f -name "*.sh" -exec dos2unix {} \; && \
+    find /home/devuser/scripts_setup_env/ -type f -name "*.sh" -exec chmod +x {} \;
+
+# Ensure devuser has ownership of the mounted volumes
+RUN mkdir -p /home/devuser/.config/nvim /home/devuser/.local/state/nvim /home/devuser/.local/share/nvim && \
+    chown -R devuser:devuser /mnt/dev-env-setup /mnt/project /home/devuser/scripts_setup_env /home/devuser/.config/nvim /home/devuser/.local/state/nvim /home/devuser/.local/share/nvim
 
 # set all scripts just copied to be executable and have line endings in unix style
 # RUN find /home/devuser/scripts_setup_env/ -type f -name "*.sh" -exec file {}     \; > /home/devuser/before_dos2unix.txt         && \
