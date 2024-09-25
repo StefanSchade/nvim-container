@@ -7,6 +7,7 @@ RUN apt-get update && \
     tmux \
     git \
     sudo \
+    ripgrep \
     dos2unix \
     iputils-ping \
     curl \

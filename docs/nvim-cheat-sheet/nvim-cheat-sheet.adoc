@@ -2,6 +2,10 @@
 
 == Modes and Transition between them
 
+
+
+
+
 === Normal Mode
 
 * purpouse is navgation and manipulation of text
@@ -35,9 +39,37 @@
 
   ** `Esc` or `Ctrl` + `[`
   
-=== Replacement Mode
+=== Replacing text
 
-* purpose is replacing text
+there is no dedicated replacement mode as in other editors
+
+==== simple replacement of text
+
+* replace just one character `r`
+* replace current word: Normal Mode -> `cw` 
+* replace multiple words:
+  ** enter visual mode `v`
+  ** move cursor to select text to be replaced
+  ** press `c`to change the selection
+
+* replace line to EOL `C` or `c` + `$`
+* replace line to cursor `c` + `0`
+* replace line completely `S` or mark the whole line in Visual with `V` and press `c`
+
+
+==== advanced replacement
+
+* query replace: `:%s/old_text/new_text/g` + `Enter`
+  ** if you replace the final `g` with `gc` neovim will prompt for confiration before each replacement
+  ** if first selecting a section in visual mode you can limit the replacement to that area - the command line will appear with `<,>` so the command will look like `:<,>s/foo/bar/g`
+  ** if prepending the command with a line range you can limit the replacement to that range `:start_line,end_line s/old_text/new_text/g` (blank is not typed)
+
+* confirmation mode will accept the follwoing commands
+  ** `y` yes - replace occurence
+  ** `n` no - skip the occurence
+  ** `a` all - replace all remaining occurences
+  ** `q` quit
+  ** `l` last - replace this occurence and stop
 
 
 === Comand-Line Mode
@@ -47,7 +79,7 @@
 * transition into Comand-Line mode
 
   ** `:` - Start command-line mode for Ex commands
-  ** `/` - start forward search
+  ** `/` - start forward search (move between matches with `n` and `N`)
   ** `?` - start backward search
 
 * transition to normal mode
@@ -103,6 +135,14 @@
 
 :bufdo if !&modified | bdelete | endif
 
+== Yank and Paste
+
+=== working with old buffers
+
+* to see content of all registers type `:reg`
+* identify the register you want to use, each is identified by a special character
+* to paste text from a register use the `"<register>p` or `"<register>P` 
+
 == Working with Splits
 
 === creating Splits
@@ -139,7 +179,23 @@ to open split with a specific file each can be complemented with `filename`
 * close current split `:close` or `Ctrl-w c`
 * close all others `:only` or `Ctrl-w o`
 
+== Advanced Editing Use Cases
 
+=== adding quotes around variables in bash scripts
+
+I want to add a quote around any statement starting with `$`
+
+==== Method 1: Visual Mode and Regex
+
+* highlight the area where the replacement should happen (Visual Mode)
+* run the command: `:s/\(\$\w\+\)/"\1"/g` 
+
+==== Method 2: Use a Macro
+
+* record a macro with `qq` to start recording into register `q`
+* stop recording with `q`
+* execute the macro with `@q`
+* repeat with `@@`
 
 == Plugins
 

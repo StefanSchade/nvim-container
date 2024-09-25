@@ -1,0 +1,13 @@
+= TMUX Cheat Sheet
+
+== Splitting the screen
+
+* horizontal split `Ctrl` + `b` -> `"`
+* vertical split `Ctrl` + `b` -> `%`
+
+== Navigating between Panes
+
+* move to next `Ctrl` + `b` -> `o`
+* move to previous `Ctrl` + `b` -> `;`
+
+
