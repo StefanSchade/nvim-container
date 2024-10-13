@@ -1,6 +1,7 @@
 # my additions
 .env
 zscaler.crt
+*.sqllite3
 
 # Created by https://www.toptal.com/developers/gitignore
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij+visualstudiocode+windows+macos+linux

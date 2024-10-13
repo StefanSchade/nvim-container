@@ -9,8 +9,10 @@ RUN apt-get update && \
     sudo \
     ripgrep \
     dos2unix \
+    file \
     iputils-ping \
     curl \
+    jq \
     wget \
     apt-transport-https \
     ca-certificates \
