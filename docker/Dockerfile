@@ -91,14 +91,12 @@ RUN echo "Checking for ZScaler certificate to remove" && \
         echo "ZScaler certificate was not added, nothing to remove."; \
     fi
 
+# Set the default umask for all processes in the container - do that before switching to devuser
+RUN echo "umask 000" >> /etc/profile
+
 # Switch to devuser
 USER devuser
 #WORKDIR /home/devuser/scripts_setup_env/
-
-# Set the default umask for all processes in the container
-RUN echo "umask 000" >> /etc/profile
-
-
 
 WORKDIR /mnt/
 
