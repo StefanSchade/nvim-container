@@ -95,6 +95,11 @@ RUN echo "Checking for ZScaler certificate to remove" && \
 USER devuser
 #WORKDIR /home/devuser/scripts_setup_env/
 
+# Set the default umask for all processes in the container
+RUN echo "umask 000" >> /etc/profile
+
+
+
 WORKDIR /mnt/
 
 # entrypoint irrelevant since override in docker-compose.yml
