@@ -2,8 +2,8 @@
 
 
 # 1. Take ownership of both mount points
-chown -R devuser:devuser /mnt/dev-env-setup
-chown -R devuser:devuser /mnt/project
+sudo chown -R devuser:devuser /mnt/dev-env-setup
+sudo chown -R devuser:devuser /mnt/project
 
 # 2. Assign read/write/execute permissions to everyone (including the host user)
 chmod -R 777 /mnt/dev-env-setup
